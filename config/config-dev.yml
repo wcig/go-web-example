@@ -1,0 +1,19 @@
+app:
+  name: go-web-demo
+  profile: dev
+
+server:
+  port: 28080
+  context_path: /
+
+logger:
+  path: /tmp/log
+  stdout: true
+  access: true
+  root:
+    file_name: info.log
+    max_size: 1
+    max_age: 1
+    max_backups: 3
+    compress: false
+    level: debug
