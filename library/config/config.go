@@ -2,8 +2,8 @@ package config
 
 import (
 	"go-app/library/log"
-	"go-app/util/json"
-	"go-app/util/yaml"
+	"go-app/library/util/json"
+	"go-app/library/util/yaml"
 	"path/filepath"
 )
 
