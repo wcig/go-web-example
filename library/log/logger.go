@@ -1,6 +1,7 @@
 package log
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 
@@ -35,6 +36,9 @@ const (
 )
 
 var (
+	rl *zap.Logger
+	al *zap.Logger
+
 	rootLogger   *zap.SugaredLogger
 	accessLogger *zap.SugaredLogger
 )
@@ -71,7 +75,8 @@ func Init(cfg *LoggerCfg) {
 		aw,
 		accessLogLevel,
 	)
-	accessLogger = zap.New(ac).Sugar()
+	al = zap.New(ac)
+	accessLogger = al.Sugar()
 
 	// root
 	if cfg.Root != nil {
@@ -90,7 +95,8 @@ func Init(cfg *LoggerCfg) {
 			rw,
 			getLevel(cfg.Root.Level),
 		)
-		rootLogger = zap.New(rc).Sugar()
+		rl = zap.New(rc, zap.AddCaller())
+		rootLogger = rl.Sugar()
 	}
 }
 
@@ -103,18 +109,6 @@ func Access(args ...interface{}) {
 func Accessf(template string, args ...interface{}) {
 	if accessLogger != nil {
 		accessLogger.Infof(template, args...)
-	}
-}
-
-func Error(args ...interface{}) {
-	if rootLogger != nil {
-		rootLogger.Error(args)
-	}
-}
-
-func Errorf(template string, args ...interface{}) {
-	if rootLogger != nil {
-		rootLogger.Errorf(template, args...)
 	}
 }
 
@@ -139,6 +133,24 @@ func Debug(args ...interface{}) {
 func Debugf(template string, args ...interface{}) {
 	if rootLogger != nil {
 		rootLogger.Debugf(template, args...)
+	}
+}
+
+func Error(args ...interface{}) {
+	if rootLogger != nil {
+		rootLogger.Error(args)
+	}
+}
+
+func Errorf(template string, args ...interface{}) {
+	if rootLogger != nil {
+		rootLogger.Errorf(template, args...)
+	}
+}
+
+func PkgError(err error) {
+	if rootLogger != nil {
+		rl.Error(err.Error(), zap.String("stacktrace", fmt.Sprintf("%+v", err)))
 	}
 }
 
