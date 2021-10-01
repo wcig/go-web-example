@@ -6,24 +6,45 @@ import (
 	"path/filepath"
 
 	"github.com/natefinch/lumberjack"
+	"github.com/spf13/viper"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
 
-type LoggerCfg struct {
-	Path   string `yaml:"path" json:"path"`
-	Stdout bool   `yaml:"stdout" json:"stdout"`
-	Access bool   `yaml:"access" json:"access"`
-	Root   *Root  `yaml:"root" json:"root"`
+const configKey = "logging"
+
+type LogStarter struct {
+	LogConfig LogConfig
 }
 
-type Root struct {
-	FileName   string `yaml:"file_name" json:"file_name"`
-	MaxSize    int    `yaml:"max_size" json:"max_size"`
-	MaxAge     int    `yaml:"max_age" json:"max_age"`
-	MaxBackups int    `yaml:"max_backups" json:"max_backups"`
-	Compress   bool   `yaml:"compress" json:"compress"`
-	Level      string `yaml:"level" json:"level"`
+func (s *LogStarter) Init(cfg *viper.Viper) {
+	info := cfg.Sub(configKey)
+	if info == nil {
+		panic("log config empty")
+	}
+
+	if err := info.Unmarshal(&s.LogConfig); err != nil {
+		panic(err)
+	}
+}
+
+func (s *LogStarter) Start(cfg *viper.Viper) {
+	Init(&s.LogConfig)
+}
+
+type LogConfig struct {
+	Enabled bool   `yaml:"enabled" json:"enabled"`
+	Path    string `yaml:"path" json:"path"`
+	Stdout  bool   `yaml:"stdout" json:"stdout"`
+	Access  bool   `yaml:"access" json:"access"`
+	Root    *struct {
+		FileName   string `yaml:"file_name" json:"file_name"`
+		MaxSize    int    `yaml:"max_size" json:"max_size"`
+		MaxAge     int    `yaml:"max_age" json:"max_age"`
+		MaxBackups int    `yaml:"max_backups" json:"max_backups"`
+		Compress   bool   `yaml:"compress" json:"compress"`
+		Level      string `yaml:"level" json:"level"`
+	} `yaml:"root" json:"root"`
 }
 
 const (
@@ -43,7 +64,11 @@ var (
 	accessLogger *zap.SugaredLogger
 )
 
-func Init(cfg *LoggerCfg) {
+func Init(cfg *LogConfig) {
+	if !cfg.Enabled {
+		return
+	}
+
 	// mkdir
 	if cfg.Path != "" {
 		_, err := os.Stat(cfg.Path)

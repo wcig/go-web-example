@@ -6,7 +6,8 @@ server:
   port: 28080
   context_path: /
 
-logger:
+logging:
+  enabled: true
   path: /tmp/log
   stdout: true
   access: true
