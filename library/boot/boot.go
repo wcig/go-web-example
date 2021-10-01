@@ -22,7 +22,7 @@ func (bs *BootStarter) initStarters() {
 
 func (bs *BootStarter) startStarters() {
 	for _, s := range bs.Starters {
-		s.Start(bs.Config)
+		s.Start()
 	}
 }
 
