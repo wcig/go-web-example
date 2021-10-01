@@ -1,41 +1,54 @@
 package web
 
 import (
-
-	// "go-app/app"
-
-	"go-app/library/config"
 	"go-app/library/web/middleware"
 	"go-app/library/web/router"
 	"net/http"
 
 	"github.com/facebookgo/grace/gracehttp"
 	"github.com/gin-gonic/gin"
-	// "github.com/vskit-tv/vcomm-go/util/client"
-	// "github.com/vskit-tv/vcomm-go/base/verr"
-	// "github.com/vskit-tv/vcomm-go/model"
-	// "github.com/facebookgo/grace/gracehttp"
-	// "github.com/gin-contrib/cors"
-	// "github.com/gin-contrib/gzip"
-	// "github.com/gin-gonic/gin"
-	// "github.com/vskit-tv/vcomm-go/framework/gin/web"
-	// "github.com/vskit-tv/vcomm-go/framework/web/auth"
+	"github.com/spf13/viper"
 )
 
+const configKey = "server"
+
+type WebStarter struct {
+	Web *Web
+}
+
+type WebConfig struct {
+	Port        string `yaml:"port" json:"port"`
+	ContextPath string `yaml:"context_path" json:"context_path"`
+}
+
+func (s *WebStarter) Init(cfg *viper.Viper) {
+	info := cfg.Sub(configKey)
+	if info == nil {
+		panic("server config empty")
+	}
+
+	var wc WebConfig
+	if err := info.Unmarshal(&wc); err != nil {
+		panic(err)
+	}
+
+	web := New(&wc)
+	s.Web = web
+}
+
+func (s *WebStarter) Start() {
+	s.Web.RegisterRouters(router.GetRouters())
+	s.Web.Listen()
+}
+
 type Web struct {
-	Config    *config.ServerCfg
 	Engine    *gin.Engine
 	BaseGroup *gin.RouterGroup
+	Config    *WebConfig
 }
 
-func Start() {
-	web := New()
-	web.RegisterRouters(router.GetRouters())
-	web.Listen()
-}
-
-func New() *Web {
-	cfg := config.Get()
+func New(wc *WebConfig) *Web {
+	gin.SetMode("debug")
 	engine := gin.New()
 	engine.Use(gin.Logger())
 	engine.Use(gin.Recovery())
@@ -43,9 +56,9 @@ func New() *Web {
 	engine.NoMethod(middleware.NoMethod)
 	engine.Use(middleware.AccessLog)
 	return &Web{
-		Config:    cfg.Server,
 		Engine:    engine,
-		BaseGroup: engine.Group(cfg.Server.ContextPath),
+		BaseGroup: engine.Group(wc.ContextPath),
+		Config:    wc,
 	}
 }
 

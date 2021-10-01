@@ -14,7 +14,7 @@ import (
 const configKey = "logging"
 
 type LogStarter struct {
-	LogConfig LogConfig
+	LogConfig *LogConfig
 }
 
 func (s *LogStarter) Init(cfg *viper.Viper) {
@@ -23,13 +23,15 @@ func (s *LogStarter) Init(cfg *viper.Viper) {
 		panic("log config empty")
 	}
 
-	if err := info.Unmarshal(&s.LogConfig); err != nil {
+	var lc LogConfig
+	if err := info.Unmarshal(&lc); err != nil {
 		panic(err)
 	}
+	s.LogConfig = &lc
 }
 
-func (s *LogStarter) Start(cfg *viper.Viper) {
-	Init(&s.LogConfig)
+func (s *LogStarter) Start() {
+	Init(s.LogConfig)
 }
 
 type LogConfig struct {
