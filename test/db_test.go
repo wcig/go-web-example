@@ -1,7 +1,22 @@
 package test
 
-import "testing"
+import (
+	"go-app/library/boot"
+	"go-app/library/db"
+	"testing"
 
-func Test1(t *testing.T) {
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/stretchr/testify/assert"
+)
 
+func initDB() {
+	boot.Register(&db.DBStarter{})
+	testBootRun()
+}
+
+func TestDB(t *testing.T) {
+	initDB()
+
+	err := db.GetDB().Ping()
+	assert.Nil(t, err)
 }

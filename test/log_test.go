@@ -13,5 +13,6 @@ func initLog() {
 
 func TestLog(t *testing.T) {
 	initLog()
+
 	log.Info("ok")
 }
