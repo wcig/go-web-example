@@ -5,6 +5,16 @@ server:
   port: 28080
   context_path: /
 
+db:
+  primary: test
+  datasource:
+    test:
+      drive_name: mysql
+      url: root:123456@tcp(localhost:3306)/test?interpolateParams=False&charset=utf8mb4
+      max_idle: 5
+      max_open: 10
+      show_sql: true
+
 logging:
   enabled: true
   path: /tmp/log

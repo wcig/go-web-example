@@ -40,3 +40,10 @@ func Run(cfs embed.FS, profile string) {
 	boot.initStarters()
 	boot.startStarters()
 }
+
+func TestRun(profile string) {
+	cfg := config.TestInit(profile)
+	boot.Config = cfg
+	boot.initStarters()
+	boot.startStarters()
+}

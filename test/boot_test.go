@@ -2,10 +2,8 @@ package test
 
 import (
 	"go-app/library/boot"
-	"go-app/library/log"
 	"os"
 	"path/filepath"
-	"testing"
 )
 
 func init() {
@@ -13,16 +11,6 @@ func init() {
 	_ = os.Chdir(filepath.Dir(wd))
 }
 
-func initBootStarter() {
-	boot.Register(&log.LogStarter{})
-}
-
 func testBootRun() {
-	initBootStarter()
-	boot.Run("dev")
-}
-
-func TestLog(t *testing.T) {
-	testBootRun()
-	log.Info("ok")
+	boot.TestRun("dev")
 }

@@ -12,6 +12,8 @@ require (
 	github.com/facebookgo/stats v0.0.0-20151006221625-1b76add642e4 // indirect
 	github.com/facebookgo/subset v0.0.0-20200203212716-c811ad88dec4 // indirect
 	github.com/gin-gonic/gin v1.6.3
+	github.com/go-sql-driver/mysql v1.4.1
+	github.com/go-xorm/xorm v0.7.9
 	github.com/go-yaml/yaml v2.1.0+incompatible
 	github.com/mitchellh/mapstructure v1.4.2
 	github.com/natefinch/lumberjack v2.0.0+incompatible
@@ -21,4 +23,6 @@ require (
 	golang.org/x/sys v0.0.0-20211001092434-39dca1131b70 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0 // indirect
+	xorm.io/builder v0.3.9 // indirect
+	xorm.io/core v0.7.3 // indirect
 )
