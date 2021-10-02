@@ -1,6 +1,7 @@
 package main
 
 import (
+	"embed"
 	"flag"
 	_ "go-app/app/controller"
 	"go-app/library/boot"
@@ -10,6 +11,9 @@ import (
 
 var profile = flag.String("profile", "dev", "profile: dev, test, prod")
 
+//go:embed config
+var cfs embed.FS
+
 func init() {
 	boot.Register(&log.LogStarter{})
 	boot.Register(&web.WebStarter{})
@@ -17,5 +21,5 @@ func init() {
 
 func main() {
 	flag.Parse()
-	boot.Run(*profile)
+	boot.Run(cfs, *profile)
 }

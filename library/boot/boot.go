@@ -1,6 +1,7 @@
 package boot
 
 import (
+	"embed"
 	"go-app/library/config"
 	"go-app/library/starter"
 
@@ -33,8 +34,8 @@ func Register(starter starter.Starter) {
 	boot.Starters = append(boot.Starters, starter)
 }
 
-func Run(profile string) {
-	cfg := config.Init(profile)
+func Run(cfs embed.FS, profile string) {
+	cfg := config.Init(cfs, profile)
 	boot.Config = cfg
 	boot.initStarters()
 	boot.startStarters()
