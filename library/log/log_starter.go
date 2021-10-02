@@ -9,7 +9,7 @@ import (
 const configKey = "logging"
 
 type LogStarter struct {
-	LogConfig *LogConfig
+	Config *LogConfig
 }
 
 func (s *LogStarter) Init(cfg *viper.Viper) {
@@ -22,9 +22,9 @@ func (s *LogStarter) Init(cfg *viper.Viper) {
 	if err := info.Unmarshal(&lc, yaml.YamlDecodeOption()); err != nil {
 		panic(err)
 	}
-	s.LogConfig = &lc
+	s.Config = &lc
 }
 
 func (s *LogStarter) Start() {
-	Init(s.LogConfig)
+	Init(s.Config)
 }
