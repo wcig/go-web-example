@@ -1,6 +1,5 @@
 app:
   name: go-web-demo
-  profile: dev
 
 server:
   port: 28080
