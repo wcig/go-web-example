@@ -33,6 +33,11 @@ mongo:
       min_pool_size: 1
       show_cmd: false
 
+kafka:
+  producer:
+    name_servers:
+      - 192.168.0.102:9092
+
 logging:
   enabled: true
   path: /tmp/log
