@@ -12,7 +12,7 @@ type DbItemConfig struct {
 	Url       string `yaml:"url" json:"url"`
 	MaxIdle   int    `yaml:"max_idle" json:"max_idle"`
 	MaxOpen   int    `yaml:"max_open" json:"max_open"`
-	ShowSql   bool   `json:"show_sql" json:"show_sql"`
+	ShowSql   bool   `yaml:"show_sql" json:"show_sql"`
 }
 
 var (
