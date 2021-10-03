@@ -1,0 +1,9 @@
+kind: reverse
+name: test
+source:
+  database: mysql
+  conn_str: 'root:123456@tcp(localhost:3306)/test?interpolateParams=False&charset=utf8mb4'
+targets:
+  - type: codes
+    language: golang
+    output_dir: ./
