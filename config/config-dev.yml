@@ -15,6 +15,15 @@ db:
       max_open: 10
       show_sql: true
 
+redis:
+  single:
+    primary: test
+    source:
+      test:
+        addr: localhost:6379
+        password:
+        pool_size: 10
+
 logging:
   enabled: true
   path: /tmp/log
