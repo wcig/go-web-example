@@ -24,6 +24,15 @@ redis:
         password:
         pool_size: 10
 
+mongo:
+  primary: test
+  source:
+    test:
+      addr: mongodb://localhost:27017
+      max_pool_size: 10
+      min_pool_size: 1
+      show_cmd: false
+
 logging:
   enabled: true
   path: /tmp/log
