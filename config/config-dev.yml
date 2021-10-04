@@ -34,9 +34,11 @@ mongo:
       show_cmd: false
 
 kafka:
-  producer:
-    name_servers:
-      - 192.168.0.102:9092
+  brokers: localhost:9092
+  consumer:
+    -
+      topic: test
+      group_id: test_group
 
 logging:
   enabled: true

@@ -5,6 +5,7 @@ go 1.16
 require (
 	github.com/DataDog/zstd v1.3.5 // indirect
 	github.com/Shopify/sarama v1.30.0 // indirect
+	github.com/bsm/sarama-cluster v2.1.15+incompatible // indirect
 	github.com/facebookgo/clock v0.0.0-20150410010913-600d898af40a // indirect
 	github.com/facebookgo/ensure v0.0.0-20200202191622-63f1cf65ac4c // indirect
 	github.com/facebookgo/freeport v0.0.0-20150612182905-d4adf43b75b9 // indirect
