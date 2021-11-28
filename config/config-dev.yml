@@ -36,8 +36,7 @@ mongo:
 kafka:
   brokers: localhost:9092
   consumer:
-    -
-      topic: test
+    - topic: test
       group_id: test_group
 
 logging:
