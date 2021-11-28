@@ -3,10 +3,15 @@ package test
 import (
 	"context"
 	"fmt"
+	"go-app/library/boot"
+	"go-app/library/log"
+	_rocketmq "go-app/library/rocketmq"
 	"os"
 	"strconv"
 	"testing"
 	"time"
+
+	"github.com/stretchr/testify/assert"
 
 	"github.com/apache/rocketmq-client-go/v2"
 	"github.com/apache/rocketmq-client-go/v2/admin"
@@ -113,4 +118,43 @@ func TestRocketMQConsumer(t *testing.T) {
 	if err != nil {
 		fmt.Printf("shutdown Consumer error: %s", err.Error())
 	}
+}
+
+func initRocketMQ() {
+	boot.Register(&log.LogStarter{})
+	boot.Register(&_rocketmq.RocketMQStarter{})
+	testBootRun()
+}
+
+func TestRocketMQSendSyncMsg(t *testing.T) {
+	initRocketMQ()
+
+	err := _rocketmq.SendSyncMsg("test", []byte("ok"))
+	assert.Nil(t, err)
+}
+
+func TestRocketMQSendAsyncMsg(t *testing.T) {
+	initRocketMQ()
+
+	err := _rocketmq.SendAsyncMsg("test", []byte("ok"+time.Now().String()))
+	assert.Nil(t, err)
+	time.Sleep(time.Second * 5)
+}
+
+func init() {
+	const (
+		topic   = "test"
+		groupId = "test_group"
+	)
+
+	_rocketmq.RegisterHandler(groupId, topic, func(msg *primitive.MessageExt) {
+		fmt.Println("test consumer rocketmq raw msg:", msg)
+		fmt.Printf("test consumer rocketmq msg topic: %s, body: %s\n", msg.Topic, msg.Body)
+	})
+}
+
+func TestRocketMQConsumerMsg(t *testing.T) {
+	initRocketMQ()
+
+	time.Sleep(time.Hour)
 }

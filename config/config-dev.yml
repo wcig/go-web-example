@@ -39,6 +39,12 @@ kafka:
     - topic: test
       group_id: test_group
 
+rocketmq:
+  brokers: 127.0.0.1:9876
+  consumer:
+    - topic: test
+      group_id: test_group
+
 logging:
   enabled: true
   path: /tmp/log
