@@ -28,6 +28,7 @@ func New(wc *WebConfig) *Web {
 	engine.NoRoute(middleware.NoRoute)
 	engine.NoMethod(middleware.NoMethod)
 	engine.Use(middleware.AccessLog)
+	// engine.Use(middleware.LimitMiddleware(100)) // limit concurrent request num
 	return &Web{
 		Engine:    engine,
 		BaseGroup: engine.Group(wc.ContextPath),
